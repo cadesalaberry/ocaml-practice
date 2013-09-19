@@ -1,0 +1,51 @@
+
+File "hw1-fixme.ml", line 1:
+Warning 24: bad source file name: "Hw1-fixme" is not a valid module name.
+
+File "hw1-fixme.ml", line 12, characters 23-25:
+Error: Syntax error
+
+>		 Replaced "of" in "let dble int = match n of" by "with" line 12
+
+
+File "hw1-fixme.ml", line 13, characters 6-8:
+Error: Syntax error
+
+>		 Replaced the arrows "=>" by "->" line 13 and 14
+
+
+File "hw1-fixme.ml", line 12, characters 21-22:
+Error: Unbound value n
+
+>		 Replaced "int" in "let dble n = match n with" by "n" line 12
+
+
+File "hw1-fixme.ml", line 14, characters 14-18:
+Error: Unbound value dble
+
+>		 Replaced "  | _ -> 2 + (dble (n - 1))" by "  | _ -> 2 * n" line 14 
+
+
+File "hw1-fixme.ml", line 30, characters 4-5:
+Error: Syntax error
+
+>		 Added pipes at the beginning of lines 29 and 30
+
+
+File "hw1-fixme.ml", line 30, characters 15-24:
+Error: Unbound value factorial
+
+>		 Replaced "factorial" by "fact" line 30
+
+
+File "hw1-fixme.ml", line 30, characters 14-28:
+Error: This expression has type float but an expression was expected of type
+         int
+
+>		 Replaced "1.0" by "1" line 30
+
+
+Warning 24: bad source file name: "Hw1-fixme" is not a valid module name.
+
+>		 Renamed file to "hw1_fixed.ml"
+

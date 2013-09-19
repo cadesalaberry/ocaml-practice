@@ -1,0 +1,11 @@
+Scenario 1 :
+
+Bob and Tom are already two working on it, but they did not have access to Hanna code, therefore they are not in violation of the copyright. 
+
+Scenario 2 :
+
+All the work produced at McGill is the University's property, therefore by giving public access to the ressources, Bob is not complying to his contract.
+
+Scenario 3 :
+
+Even if they started working soon, they had acces to an entire solution from Abbey. They are in violation of the copyright.
