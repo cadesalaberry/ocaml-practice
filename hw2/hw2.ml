@@ -28,10 +28,20 @@ exception NotImplemented
 (* repeated: int -> ('a -> 'a) -> 'a -> 'a *)
 
 let rec repeated n f = match n with
-  | 1 -> f
-  | _ -> repeated n-1 f
+  | 1 -> f 
+  | n -> fun x -> f (repeated (n - 1) f x);;
 
+let square n = n*n;;
 let foo = repeated 2 square;;
+
+print_string ("foo 2 : " ^ string_of_int (foo 2) ^ "\n");;
+print_string ("foo 2 : " ^ string_of_int (foo 3) ^ "\n");;
+
+let t8 = repeated 3 (fun x -> x*2);;
+
+print_string (" t8 2 : " ^ string_of_int (t8 2) ^ "\n");;
+print_string (" t8 3 : " ^ string_of_int (t8 3) ^ "\n");;
+print_string (" t8 4 : " ^ string_of_int (t8 4) ^ "\n");;
 
 (* -----------------------------------------------------------------------------*)
 (* QUESTION 3: Maximum Likelihood                                               *)
@@ -72,7 +82,7 @@ let dist_table (marbelsTotal, marbelsDrawn) x = raise NotImplemented
 (* of black marbels which is most likely to be in an urn *)
 
 let max_in_list l = 
-  let rec max_in_list' pos l = match l with 
+  let rec max_in_list' pos l = match l with
     | [h]  -> (pos, h)
     | h::t -> 
       let (q, mx) = max_in_list' (pos+1) t in 
