@@ -34,14 +34,14 @@ let rec repeated n f = match n with
 let square n = n*n;;
 let foo = repeated 2 square;;
 
-print_string ("foo 2 : " ^ string_of_int (foo 2) ^ "\n");;
-print_string ("foo 2 : " ^ string_of_int (foo 3) ^ "\n");;
+print_endline ("foo 2 : " ^ string_of_int (foo 2));;
+print_endline ("foo 2 : " ^ string_of_int (foo 3));;
 
 let t8 = repeated 3 (fun x -> x*2);;
 
-print_string (" t8 2 : " ^ string_of_int (t8 2) ^ "\n");;
-print_string (" t8 3 : " ^ string_of_int (t8 3) ^ "\n");;
-print_string (" t8 4 : " ^ string_of_int (t8 4) ^ "\n");;
+print_endline (" t8 2 : " ^ string_of_int (t8 2));;
+print_endline (" t8 3 : " ^ string_of_int (t8 3));;
+print_endline (" t8 4 : " ^ string_of_int (t8 4));;
 
 (* -----------------------------------------------------------------------------*)
 (* QUESTION 3: Maximum Likelihood                                               *)
@@ -75,7 +75,12 @@ let rec tabulate f n =
   tab n []
 
 
-let dist_table (marbelsTotal, marbelsDrawn) x = raise NotImplemented
+let dist_table (marbelsTotal, marbelsDrawn) x =
+  tabulate (fun n -> dist_black n x (marbelsTotal, marbelsDrawn)) marbelsTotal
+
+let q3_1 = dist_table (10,3) 2;;
+
+print_endline (" dist_table (10,3) 2 : \n\t");;
 
 (* -----------------------------------------------------------------------------*)
 (* Compute the maximum of the dist_table. The maximum corresponds to the number *)
@@ -95,13 +100,17 @@ let max_in_list l =
 (* -----------------------------------------------------------------------------*)
 (* Q 3.2: Compute the distribution matrix                                       *)
 (* -----------------------------------------------------------------------------*)
-let dist_matrix (total, drawn) resultList = raise NotImplemented
+let dist_matrix (total, drawn) resultList =
+  List.map (fun x -> dist_table (total, drawn) x)  resultList
+
 
 
 (* -----------------------------------------------------------------------------*)
 (* Q 3.3: Test whether the matrix is empty                                      *)
 (* -----------------------------------------------------------------------------*)
-let emptyMatrix matrix = raise NotImplemented
+let emptyMatrix matrix =
+  List.for_all (fun l -> match l with [] -> true | _ -> false) matrix
+
 
 
 (* -----------------------------------------------------------------------------*)
@@ -109,14 +118,19 @@ let emptyMatrix matrix = raise NotImplemented
 (* -----------------------------------------------------------------------------*)
 
 
-let rec combined_dist_table matrix = raise NotImplemented
+let rec combined_dist_table matrix = match (emptyMatrix matrix) with
+  | true  -> []
+  | false ->
+    let heads = List.map (fun (head::t) -> head) matrix
+    and tails = List.map (fun (h::tail) -> tail) matrix in
+    let rsult = List.fold_right (fun x r -> x *. r) heads 1.0
+    in rsult :: combined_dist_table tails
 
 (* -----------------------------------------------------------------------------*)
 (* Maximum Likelihood                                                           *)
 let max_likelihood (total, drawn)  resultList = 
   max_in_list 
-   (combined_dist_table  (dist_matrix (total, drawn) resultList))
-
+   (combined_dist_table  ((dist_matrix (total, drawn) resultList)))
 
 (*
 
@@ -150,10 +164,15 @@ type 'a trie = Node of 'a * ('a trie) list | Empty
 (* -------------------------------------------------------------*)
 
 (* string_explode : string -> char list *)
-let string_explode s = raise NotImplemented
+let string_explode s = 
+  let rec exp i l = 
+    if i < 0 then l
+    else exp (i - 1) (s.[i] :: l) in
+  exp (String.length s - 1) []
 
 (* string_implode : char list -> string *)
-let string_implode l = raise NotImplemented
+let string_implode l = 
+  List.fold_left (fun s c -> s ^ String.make 1 c) "" l
 
 (* -------------------------------------------------------------*)
 (* QUESTION 4.2 : Insert a string into a trie  [15 points]      *) 
@@ -164,12 +183,20 @@ let string_implode l = raise NotImplemented
 
 
 (* Duplicate inserts are allowed *)
-let rec ins l t = raise NotImplemented 
+let rec ins (l,t) = match (l,t) with
+  | ([],[])       -> [Empty]
+  | ([], (t::ts)) -> t::(ins ([], ts))
+  | (c::cs, [])   -> [Node (c, ins (cs, []))]
+  | (c::cs, Empty::t) -> Empty::(ins (c::cs, t))
+  | (c::cs, (Node (c',ts))::t) -> if c=c'
+      then (Node (c',ins (cs, ts)))::t
+      else (Node (c',ts))::(ins (c::cs, t))
+
 
 (* insert : string -> (char trie) list -> (char trie) list *)
 let  insert s t = 
   let l = string_explode s in  (* turns a string into a char list *)    
-  ins l t
+  ins (l,t)
 
 
 (* -------------------------------------------------------------*)
@@ -182,12 +209,17 @@ let rec containsEmpty l = match l with
   | []       -> false
 
 (* lkp : char list * (char trie) list -> bool *)
-let rec lkp char_list trie_list = raise NotImplemented
+let rec lkp (char_list, trie_list) = raise NotImplemented
+
+  (*match (char_list,trie_list) with
+    | [], Node (Empty,_) -> raise Not_found
+    | [], Node (v,_)     -> v
+    | x::r, Node (_,m)   -> lkp r (lkp x m)
 
 let rec lookup s t = 
   let l = string_explode s in (* l = char list *)    
     lkp l t
-
+*)
 (* -------------------------------------------------------------*)
 (* QUESTION 4.4 : Find all string in a trie   [15 points]       *) 
 (* -------------------------------------------------------------*)
