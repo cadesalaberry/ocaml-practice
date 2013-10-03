@@ -17,11 +17,12 @@ let rec print_list_int list = match list with
 | [] -> print_string "\n"
 | e::l -> print_float e; print_string "]["; print_list_int l;;
 
+let rec print_list_int2 l = List.iter print_list_int l; print_string "\n";;
+
 let rec print_list_char list = match list with
 | [] -> print_string "\n"
-| e::l -> print_string e; print_string "]["; print_list_char l;;
+| e::l -> print_string(String.make 1 e); print_string "]["; print_list_char l;;
 
-let rec print_list_int2 l = List.iter print_list_int l; print_string "\n";;
 
 print_endline "\nQUESTION 2 :  Warm-up\n";;
 (* -------------------------------------------------------------*)
@@ -138,8 +139,7 @@ let rec combined_dist_table matrix = match (emptyMatrix matrix) with
   | false ->
     let heads = List.map (fun (head::t) -> head) matrix
     and tails = List.map (fun (h::tail) -> tail) matrix in
-    let rsult = List.fold_right (fun x r -> x *. r) heads 1.0
-    in rsult :: combined_dist_table tails
+    List.fold_right (fun x r -> x *. r) heads 1.0 :: combined_dist_table tails
 
 let q3_4 = combined_dist_table (dist_matrix (10, 3) [2; 0]);;
 print_endline "combined_dist_table (dist_matrix (10, 3) [2; 0]) :";;
@@ -194,12 +194,6 @@ let string_explode s =
 let string_implode l = 
   List.fold_left (fun s c -> s ^ String.make 1 c) "" l
 
-  let q4_1 = "qwertyuiop";;
-  print_string "exploding 'qwertyuiop' : ";;
-  print_list_char (string_explode q4_1);;
-
-
-
 (* -------------------------------------------------------------*)
 (* QUESTION 4.2 : Insert a string into a trie  [15 points]      *) 
 (* -------------------------------------------------------------*)
@@ -235,17 +229,21 @@ let rec containsEmpty l = match l with
   | []       -> false
 
 (* lkp : char list * (char trie) list -> bool *)
-let rec lkp (char_list, trie_list) = raise NotImplemented
-
-  (*match (char_list,trie_list) with
-    | [], Node (Empty,_) -> raise Not_found
-    | [], Node (v,_)     -> v
-    | x::r, Node (_,m)   -> lkp r (lkp x m)
+let rec lkp char_list trie_list = match (char_list,trie_list) with
+    | ([], [Empty]) -> true
+    | ([], []     ) -> false
+    | ([], trie   ) -> false
+    | (c::rest, []) -> false
+    | (c::rest, Empty::trie)             -> lkp c::rest trie
+    | (c::rest, Node(c',subtrie)::trie)  ->
+        if c=c'
+          then lkp rest subtrie
+          else lkp c::rest trie
 
 let rec lookup s t = 
   let l = string_explode s in (* l = char list *)    
     lkp l t
-*)
+
 (* -------------------------------------------------------------*)
 (* QUESTION 4.4 : Find all string in a trie   [15 points]       *) 
 (* -------------------------------------------------------------*)
@@ -279,18 +277,13 @@ let t =
 				 Node ('r',[Empty])]) ;
 		    Node ('a' , [Node ('r', [Empty; Node ('d' , [Empty])])])])])]
 
+let q4_1 = "qwertyuiop";;
+print_string "exploding 'qwertyuiop' : ";;
+print_list_char (string_explode q4_1);;
+print_string "imploding previous : ";;
+print_string (string_implode (string_explode q4_1)^"\n\n");;
 
+let q4_2 = insert "beeeee" t
 
-
-
-
-
-
-
-
-
-
-
-
-
+Printf.printf "Is beeeee in the trie ? %B\n\n" (lookup "beeeee" t);;
 
