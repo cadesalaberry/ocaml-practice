@@ -11,8 +11,19 @@
 
 *)
 
-exception NotImplemented
+exception NotImplemented;;
 
+let rec print_list_int list = match list with
+| [] -> print_string "\n"
+| e::l -> print_float e; print_string "]["; print_list_int l;;
+
+let rec print_list_char list = match list with
+| [] -> print_string "\n"
+| e::l -> print_string e; print_string "]["; print_list_char l;;
+
+let rec print_list_int2 l = List.iter print_list_int l; print_string "\n";;
+
+print_endline "\nQUESTION 2 :  Warm-up\n";;
 (* -------------------------------------------------------------*)
 (* QUESTION 2 :  Warm-up [10 points]                            *) 
 (* -------------------------------------------------------------*)
@@ -29,9 +40,9 @@ exception NotImplemented
 
 let rec repeated n f = match n with
   | 1 -> f 
-  | n -> fun x -> f (repeated (n - 1) f x);;
+  | n -> fun x -> f (repeated (n - 1) f x)
 
-let square n = n*n;;
+let square n = n*n
 let foo = repeated 2 square;;
 
 print_endline ("foo 2 : " ^ string_of_int (foo 2));;
@@ -43,10 +54,10 @@ print_endline (" t8 2 : " ^ string_of_int (t8 2));;
 print_endline (" t8 3 : " ^ string_of_int (t8 3));;
 print_endline (" t8 4 : " ^ string_of_int (t8 4));;
 
+print_endline "\nQUESTION 3 : Maximum Likelihood\n";;
 (* -----------------------------------------------------------------------------*)
 (* QUESTION 3: Maximum Likelihood                                               *)
 (* -----------------------------------------------------------------------------*)
-
 let  fact n = 
   let rec factorial n = if n = 0 then 1 
     else  n * factorial (n-1)
@@ -78,9 +89,11 @@ let rec tabulate f n =
 let dist_table (marbelsTotal, marbelsDrawn) x =
   tabulate (fun n -> dist_black n x (marbelsTotal, marbelsDrawn)) marbelsTotal
 
-let q3_1 = dist_table (10,3) 2;;
 
-print_endline (" dist_table (10,3) 2 : \n\t");;
+let q3_1 = dist_table (10,3) 2;;
+print_string ("dist_table (10,3) 2 : \n");;
+print_list_int q3_1;;
+print_string "\n";;
 
 (* -----------------------------------------------------------------------------*)
 (* Compute the maximum of the dist_table. The maximum corresponds to the number *)
@@ -103,7 +116,9 @@ let max_in_list l =
 let dist_matrix (total, drawn) resultList =
   List.map (fun x -> dist_table (total, drawn) x)  resultList
 
-
+let q3_2 = dist_matrix (10,3) [2;0;1];;
+print_string ("dist_table (10,3) 2 : \n");;
+print_list_int2 q3_2;;
 
 (* -----------------------------------------------------------------------------*)
 (* Q 3.3: Test whether the matrix is empty                                      *)
@@ -111,13 +126,13 @@ let dist_matrix (total, drawn) resultList =
 let emptyMatrix matrix =
   List.for_all (fun l -> match l with [] -> true | _ -> false) matrix
 
-
+let q3_3 =  [[];[];[]];;
+Printf.printf "emptyMatrix [[];[];[]]\t: %B\n" (emptyMatrix q3_3);;
+Printf.printf "emptyMatrix q3_2\t: %B\n\n" (emptyMatrix q3_2);;
 
 (* -----------------------------------------------------------------------------*)
 (* Q 3.4: Compute the combined distribution table                               *)
 (* -----------------------------------------------------------------------------*)
-
-
 let rec combined_dist_table matrix = match (emptyMatrix matrix) with
   | true  -> []
   | false ->
@@ -126,8 +141,13 @@ let rec combined_dist_table matrix = match (emptyMatrix matrix) with
     let rsult = List.fold_right (fun x r -> x *. r) heads 1.0
     in rsult :: combined_dist_table tails
 
+let q3_4 = combined_dist_table (dist_matrix (10, 3) [2; 0]);;
+print_endline "combined_dist_table (dist_matrix (10, 3) [2; 0]) :";;
+print_list_int q3_4;;
+
 (* -----------------------------------------------------------------------------*)
 (* Maximum Likelihood                                                           *)
+(* -----------------------------------------------------------------------------*)
 let max_likelihood (total, drawn)  resultList = 
   max_in_list 
    (combined_dist_table  ((dist_matrix (total, drawn) resultList)))
@@ -147,7 +167,7 @@ and ResultList = [2,0]
 The maximum in this list is at position 3 (if the first element of the list is at position 0). Hence, it is most likely that there are 3 black marbels in the urn. 
 
 *)
-
+;;print_endline "\nQUESTION 4 :  Tries\n";;
 (* -------------------------------------------------------------*)
 (* QUESTION 4 :  Tries                                          *) 
 (* -------------------------------------------------------------*)
@@ -173,6 +193,12 @@ let string_explode s =
 (* string_implode : char list -> string *)
 let string_implode l = 
   List.fold_left (fun s c -> s ^ String.make 1 c) "" l
+
+  let q4_1 = "qwertyuiop";;
+  print_string "exploding 'qwertyuiop' : ";;
+  print_list_char (string_explode q4_1);;
+
+
 
 (* -------------------------------------------------------------*)
 (* QUESTION 4.2 : Insert a string into a trie  [15 points]      *) 
