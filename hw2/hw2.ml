@@ -251,7 +251,7 @@ let rec lookup s t =
   
 exception Error 
 
-let rec findAll' char_list  trie_list = raise NotImplemented
+let rec findAll' char_list trie_list = raise NotImplemented
 
 let findAll prefix trie_list = 
   begin try
