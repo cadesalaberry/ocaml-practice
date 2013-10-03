@@ -185,10 +185,7 @@ type 'a trie = Node of 'a * ('a trie) list | Empty
 
 (* string_explode : string -> char list *)
 let string_explode s = 
-  let rec exp i l = 
-    if i < 0 then l
-    else exp (i - 1) (s.[i] :: l) in
-  exp (String.length s - 1) []
+  tabulate (fun character -> String.get s character) ((String.length s) - 1)
 
 (* string_implode : char list -> string *)
 let string_implode l = 
