@@ -233,12 +233,12 @@ let rec lkp char_list trie_list = match (char_list,trie_list) with
     | ([], [Empty]) -> true
     | ([], []     ) -> false
     | ([], trie   ) -> false
-    | (c::rest, []) -> false
-    | (c::rest, Empty::trie)             -> lkp c::rest trie
-    | (c::rest, Node(c',subtrie)::trie)  ->
+    | (c::chars,[]) -> false
+    | (c::chars, Empty::trie)             -> lkp (c::chars) trie
+    | (c::chars, Node(c',subtrie)::trie)  ->
         if c=c'
-          then lkp rest subtrie
-          else lkp c::rest trie
+          then lkp chars subtrie
+          else lkp (c::chars) trie
 
 let rec lookup s t = 
   let l = string_explode s in (* l = char list *)    
@@ -283,7 +283,7 @@ print_list_char (string_explode q4_1);;
 print_string "imploding previous : ";;
 print_string (string_implode (string_explode q4_1)^"\n\n");;
 
-let q4_2 = insert "beeeee" t
+let q4_2 = insert "beeeee" t;;
 
-Printf.printf "Is beeeee in the trie ? %B\n\n" (lookup "beeeee" t);;
+Printf.printf "Is beeeee in the trie ? %B\n\n" (lookup "beeeee" q4_2);;
 
