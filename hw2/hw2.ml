@@ -280,6 +280,7 @@ print_list_char (string_explode q4_1);;
 print_string "imploding previous : ";;
 print_string (string_implode (string_explode q4_1)^"\n\n");;
 
+print_endline "Inserting 'beeeee' in the trie...\n"
 let q4_2 = insert "beeeee" t;;
 
 Printf.printf "Is beeeee in the trie ? %B\n\n" (lookup "beeeee" q4_2);;
