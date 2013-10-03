@@ -201,11 +201,11 @@ let string_implode l =
 
 (* Duplicate inserts are allowed *)
 let rec ins (l,t) = match (l,t) with
-  | ([],[])       -> [Empty]
-  | ([], (t::ts)) -> t::(ins ([], ts))
-  | (c::cs, [])   -> [Node (c, ins (cs, []))]
-  | (c::cs, Empty::t) -> Empty::(ins (c::cs, t))
-  | (c::cs, (Node (c',ts))::t) -> if c=c'
+  | ([]   , []      )           -> [Empty]
+  | ([]   , (t::ts) )           -> t::(ins ([], ts))
+  | (c::cs, []      )           -> [Node (c, ins (cs, []))]
+  | (c::cs, Empty::t)           -> Empty::(ins (c::cs, t))
+  | (c::cs, (Node (c',ts))::t)  -> if c=c'
       then (Node (c',ins (cs, ts)))::t
       else (Node (c',ts))::(ins (c::cs, t))
 
