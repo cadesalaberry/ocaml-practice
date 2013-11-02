@@ -4,27 +4,24 @@ module MemoedFibo (D : DICT with type Key.t = int) : FIBO =
 struct
 
   exception NotImplemented 
-  exception NegativeNumber
-  let rec fib n = (*raise NotImplemented*)
 
-    let hist : 'a D.dict ref = ref D.empty
-    and big_zero = Big_int.big_int_of_int 0
-    and big_one  = Big_int.big_int_of_int 1
-    and big_n_one = Big_int.big_int_of_int (n - 1)
-    and big_n_two = Big_int.big_int_of_int (n - 2)
+  let rec fib n =
 
+    let hist : 'a BigIntDict.dict ref = ref BigIntDict.empty
+    and big n = Big_int.big_int_of_int n
+    
     in
-    let rec smart_fib n = if Big_int.lt_big_int n big_zero then raise NegativeNumber
-    else match n with
-      | Some 0  -> big_zero 
-      | Some 1  -> big_one
-      | Some n  -> match (D.lookup !hist n) with
-        | None -> let value = smart_fib n in
-            (hist := (D.insert !hist (n,value));
-            value)
-        | Some number -> number
+      hist := BigIntDict.insert (!hist) (big 0, big 0);
+      hist := BigIntDict.insert (!hist) (big 1, big 1);
 
-    in Big_int.add_big_int  (smart_fib big_n_one)  (smart_fib big_n_two)
+      let rec smart_fib n = match (BigIntDict.lookup (!hist) (big n)) with
+        | None -> (let value = (Big_int.add_big_int (smart_fib (n - 1)) (smart_fib (n - 2)))
+          in
+            hist := BigIntDict.insert (!hist) (big n, value);
+            value)
+        | Some v -> v
+    in
+      smart_fib n
 end
 
 module MF = MemoedFibo (ID)
@@ -46,14 +43,8 @@ struct
 
   exception NotImplemented 
 
-  let rec memo f = (fun k -> (*raise NotImplemented*)
-    match D.lookup k with
-      | None -> let value = f k in
-          (D.insert (k,value);
-          value)
-      | Some n -> n)
-
-end
+  let rec memo f = (fun k -> raise NotImplemented)
+  end
 
 
 module AutoMemoedFibo : FIBO =

@@ -58,5 +58,5 @@ struct
 end;;
 
 
-module ID = Dict(IntLt) 
-module BigIntDict = Dict(BigInt) 
+module ID = Dict(IntLt)
+module BigIntDict = Dict(BigInt)

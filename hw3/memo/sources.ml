@@ -1,3 +1,4 @@
+#load "nums.cma"
 #use "ordered.ml"
 #use "dict.ml"
 #use "fib.ml"
