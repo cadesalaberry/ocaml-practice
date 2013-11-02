@@ -44,14 +44,11 @@ It is also often useful to convert between different metrics. Define a module ty
 feet2meter
 	meter = feet * 0.3048
 
-
 fahrenheit2celsius
 	celsius = (fahrenheit - 32) / 1.8
 
-
 miles2KM
 	km = miles * 1.60934
-
 
 MilesPerHour2KMPerHour
 
