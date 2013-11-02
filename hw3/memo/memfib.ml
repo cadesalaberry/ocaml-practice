@@ -5,7 +5,17 @@ struct
 
   exception NotImplemented 
 
-  let rec fib n = raise NotImplemented 
+  let rec fib n = (*raise NotImplemented*)
+  let hist : ’a D.dict ref = ref D.empty in
+  match n with    
+    | 0  -> Big_int.big_int_of_int 0 
+    | 1  -> Big_int.big_int_of_int 1
+    | n  -> let f = match D.lookup !hist n with
+      | None -> let value = fib n in
+          (D.insert !hist (n,value);
+          value)
+      | number -> number
+    in Big_int.add_big_int  (f (n - 1))  (f (n - 2))
 
 end
 
@@ -28,7 +38,12 @@ struct
 
   exception NotImplemented 
 
-  let rec memo f = (fun k -> raise NotImplemented)
+  let rec memo f = (fun k -> (*raise NotImplemented*)
+    match D.lookup k with
+      | None -> let value = f k in
+          (D.insert (k,value);
+          value)
+      | Some n -> n)
 
 end
 
