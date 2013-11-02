@@ -55,13 +55,12 @@ Then implement a module which provides these conversion functions.
 
 
 Parsing using exceptions. In this question, we are implementing a parser for a simple language of arithmetic expressions with +,*, and ()’s. The n represents an integer and is a terminal symbol. Top-level start symbol for this grammar is E.
-Final Expression
-E ::= S ;
+
+>Final Expression E ::= S ;
 S-Expression (expression with plus) S ::= P + S | P
-
 P-Expression (expression with times) P ::= A ∗ P | A
-
 A-expression (atomic expression) A ::= n | (S)
+
 
 The goal is to implement the parser using exceptions.
 
