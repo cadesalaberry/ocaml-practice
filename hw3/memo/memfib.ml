@@ -4,19 +4,27 @@ module MemoedFibo (D : DICT with type Key.t = int) : FIBO =
 struct
 
   exception NotImplemented 
-
+  exception NegativeNumber
   let rec fib n = (*raise NotImplemented*)
-  let hist : 'a D.dict ref = ref D.empty in
-  match n with    
-    | 0  -> Big_int.big_int_of_int 0 
-    | 1  -> Big_int.big_int_of_int 1
-    | n  -> let f = match D.lookup !hist n with
-      | None -> let value = fib n in
-          (D.insert !hist (n,value);
-          value)
-      | number -> number
-    in Big_int.add_big_int  (f (n - 1))  (f (n - 2))
 
+    let hist : 'a D.dict ref = ref D.empty
+    and big_zero = Big_int.big_int_of_int 0
+    and big_one  = Big_int.big_int_of_int 1
+    and big_n_one = Big_int.big_int_of_int (n - 1)
+    and big_n_two = Big_int.big_int_of_int (n - 2)
+
+    in
+    let rec smart_fib n = if Big_int.lt_big_int n big_zero then raise NegativeNumber
+    else match n with
+      | Some 0  -> big_zero 
+      | Some 1  -> big_one
+      | Some n  -> match (D.lookup !hist n) with
+        | None -> let value = smart_fib n in
+            (hist := (D.insert !hist (n,value));
+            value)
+        | Some number -> number
+
+    in Big_int.add_big_int  (smart_fib big_n_one)  (smart_fib big_n_two)
 end
 
 module MF = MemoedFibo (ID)
