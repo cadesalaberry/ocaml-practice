@@ -6,7 +6,7 @@ struct
   exception NotImplemented 
 
   let rec fib n = (*raise NotImplemented*)
-  let hist : ’a D.dict ref = ref D.empty in
+  let hist : 'a D.dict ref = ref D.empty in
   match n with    
     | 0  -> Big_int.big_int_of_int 0 
     | 1  -> Big_int.big_int_of_int 1
