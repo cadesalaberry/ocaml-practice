@@ -71,27 +71,27 @@ exception AtomicExpr of exp * L.token list
 
 
  and parseSumExp toklist = try parseProdExp toklist with
-   |ProdExpr(exp, L.PLUS::tail) -> (
+   | ProdExpr(exp, L.PLUS::tail) -> (
       try parseSumExp tail with
-       | SumExpr(exp2, toklist2) -> raise (SumExpr(Sum(exp,exp2), toklist2))
+      SumExpr(exp2, toklist2) -> raise (SumExpr(Sum(exp,exp2), toklist2))
     )
-   |ProdExpr(exp, toklist2) -> raise (SumExpr(exp, toklist2))
+   | ProdExpr(exp, toklist2) -> raise (SumExpr(exp, toklist2))
 
 
  and parseProdExp toklist = try parseAtom toklist with
-   |AtomicExpr(exp, L.TIMES::tail) -> (
+   | AtomicExpr(exp, L.TIMES::tail) -> (
       try parseProdExp tail with
-       |ProdExpr(exp2, toklist2) -> raise (ProdExpr(Prod(exp,exp2),toklist2))
+      ProdExpr(exp2, toklist2) -> raise (ProdExpr(Prod(exp,exp2),toklist2))
     )
-   |AtomicExpr(exp, toklist2) -> raise (ProdExpr(exp,toklist2))
+   | AtomicExpr(exp, toklist2) -> raise (ProdExpr(exp,toklist2))
 
 
  and parseAtom toklist = match toklist with
-   |(L.INT v)::tail -> raise (AtomicExpr(Int v,tail))
-   |(L.LPAREN)::tail -> (
+   | (L.INT v)::tail -> raise (AtomicExpr(Int v,tail))
+   | (L.LPAREN)::tail -> (
       try parseSumExp tail with
-       |SumExpr(exp,L.RPAREN::tail) -> raise (AtomicExpr(exp,tail))
-       |_ -> raise (Error "Expected closing bracket")
+       | SumExpr(exp,L.RPAREN::tail) -> raise (AtomicExpr(exp,tail))
+       | _ -> raise (Error "Expected closing bracket")
     )
 
 
