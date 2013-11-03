@@ -106,13 +106,13 @@ toklist’ is what remains from toklist after we peeled of all the tokens necess
 Implement the functions parseSumExp, parseProdExp, and parseAtom according to the grammar rules given above in the file parser.ml.
 
 
-#Question 3 (35 points) Memoization
+##Question 3 (35 points) Memoization
 
 In the absence of effects, a function will always evaluate to the same value when applied to the same arguments. Therefore, applying a particular function to the same arguments more than once will often result in needless work. Memoization is a simple optimization that helps to avoid this inefficiency. The idea is that you equip a function with some data structure that maps the arguments that the function has been called on to the results produced. Then, whenever the function is applied to any arguments, you first check to see if it has been applied to those arguments previously: if it has, the cached result is used instead of computing a new one; if it hasnt, the computation is actually performed and the result is cached before being returned.
 
 If you think of a graph of a function as a set of (input, output) pairs, rather than a doodle on a piece of paper representing such a set, this mapping is really storing the subset of the graph of its associated function that has been revealed so far. The optimization should let us compute each (input, output) pair in the graph exactly once and refer to the already discovered graph for inputs we need more than once. In this question, we will use a dictionary (see dict.ml) to store (input,output) pairs.
 
-##Case Study: Fibonacci
+###Case Study: Fibonacci
 
 We will first work through implementing this idea using the familiar Fibonacci function as a case study. Recall the nave implementation of the Fibonacci sequence, provided in fib.ml.
 
@@ -133,13 +133,13 @@ Note we are taking advantage of the OCaml library for big integers. You will nee
 
 	# #load "nums.cma";;
 
-##Q3.1 (15 points)
+###Q3.1 (15 points)
 
 Finish the MemoedFibo functor in memfib.ml by writing a memoized version of Fibonacci.
 You should represent the (input,output) mapping using a reference containing a persistent dictionary of type D.dict, where D is the argument to MemoedFibo. The mapping should be shared between all calls to MemoedFibo.fib, so that results are reused between multiple top-level calls. But note, that we do not expose this dictionary to the outside.
 If you dont know where to start, one good strategy is to use a pair of mutually recursive functions: make one function in the pair the fib function required by the signature; make the other function responsible for checking and updating the mapping. The benefit to this strategy is that it lets you separate memoizing from the function being memoized.
 
-##Q3.2 (3 points)
+###Q3.2 (3 points)
 
 Instead of hand-rolling a new version of every function that wed like to memoize, it would be nice to have a higher order function that produces a memoized version of any function. A totally reasonable but wrongfirst attempt at writing such an automatic memoizer as shown below and can be found in the file memo.ml.
 
@@ -175,21 +175,21 @@ Note: It is useful to actually look at the result which is described as a big in
 > Not Answered yet.
 
 
-##Q3.3 (15 points)
+###Q3.3 (15 points)
 
 Finish the Memoizer functor in memfib.ml by writing an automatic memoizer that doesnt have the problems of the PoorMemoizer. Notice that Memoizer ascribes to a different signature than PoorMemoizer. Functions that can be memoized by Memoizer take a new argument: rather than having type key -> a they have type (key -> a)-> (key -> a). When implementing Memoizer, assume that any function you memoize uses this new first argument instead of directly calling itself recursively.
 
 To illustrate how we would want to use the function memo, take a look at the module AutoMemoedFibo in the file memfib.ml.
 
 
-##Q3.4 (2 points)
+###Q3.4 (2 points)
 
 What happens if you use Memoizer to memoize a function that has effects? In particular, what happens if you memoize a function that prints things?
 
 > Not Answered Yet.
 
 
-#Question 4 (10 points)
+##Question 4 (10 points)
 
 Draw an environment diagram for the following expression and explain what the final result of its evaluation will be.
 
