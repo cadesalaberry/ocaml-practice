@@ -1,7 +1,9 @@
+#use "sources.ml"
+
 module Test = 
 struct
 
-module L = Lexer;
+module L = Lexer;;
 
 (* Definition of test cases *)
 

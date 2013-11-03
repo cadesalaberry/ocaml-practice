@@ -120,11 +120,11 @@ end;;
 
 module Conversion : CONVERSION =
 struct
+  let miles2KM dist = KM.fromFloat ((Miles.toFloat dist) *. 1.60934)
+
   let feet2meter dist = Meter.fromFloat ((Feet.toFloat dist) *. 0.3048)
 
   let fahrenheit2celsius temp = Celsius.fromFloat (((Fahrenheit.toFloat temp) -. 32.) /. 1.8)
-
-  let miles2KM dist = KM.fromFloat ((Miles.toFloat dist) *. 1.60934)
 
   let milesPerHour2KMPerHour speed = KMPerHour.fromFloat ((MilesPerHour.toFloat speed) *. 1.60934)
 end;;
