@@ -62,10 +62,10 @@ Then implement a module which provides these conversion functions.
 
 Parsing using exceptions. In this question, we are implementing a parser for a simple language of arithmetic expressions with +,*, and ()’s. The n represents an integer and is a terminal symbol. Top-level start symbol for this grammar is E.
 
->Final Expression E ::= S ;  
->S-Expression (expression with plus) S ::= P + S | P  
->P-Expression (expression with times) P ::= A ∗ P | A  
->A-expression (atomic expression) A ::= n | (S)  
+	Final Expression E ::= S ;  
+	S-Expression (expression with plus) S ::= P + S | P  
+	P-Expression (expression with times) P ::= A ∗ P | A  
+	A-expression (atomic expression) A ::= n | (S)  
 
 
 The goal is to implement the parser using exceptions.
@@ -93,7 +93,7 @@ We also implemented a simple evaluator for evaluating artithmetic expressions (s
 
 In the directory backtrack we have implemented the lexer (see file lexer.ml) and parts of the parser for the given grammar in the file parser.ml with the corresponding signature in parser.mli. Your task is to complete the parser in parser.ml. We use three different exceptions to describe success of parsing a (sub)-expression.
 
-> - exception SumExpr of exp * L.token list :
+- exception SumExpr of exp * L.token list :
 SumExpr (s, toklist’) should be raised to indicate that we successfully parsed a list of tokens called toklist into an S-Expression s and a remaining list of tokens called toklist’.
 toklist’ is what remains from toklist after we peeled of all the tokens necessary to build the S-Expression s.
 - exception ProdExpr of exp * L.token list:
@@ -109,6 +109,7 @@ Implement the functions parseSumExp, parseProdExp, and parseAtom according to th
 #Question 3 (35 points) Memoization
 
 In the absence of effects, a function will always evaluate to the same value when applied to the same arguments. Therefore, applying a particular function to the same arguments more than once will often result in needless work. Memoization is a simple optimization that helps to avoid this inefficiency. The idea is that you equip a function with some data structure that maps the arguments that the function has been called on to the results produced. Then, whenever the function is applied to any arguments, you first check to see if it has been applied to those arguments previously: if it has, the cached result is used instead of computing a new one; if it hasnt, the computation is actually performed and the result is cached before being returned.
+
 If you think of a graph of a function as a set of (input, output) pairs, rather than a doodle on a piece of paper representing such a set, this mapping is really storing the subset of the graph of its associated function that has been revealed so far. The optimization should let us compute each (input, output) pair in the graph exactly once and refer to the already discovered graph for inputs we need more than once. In this question, we will use a dictionary (see dict.ml) to store (input,output) pairs.
 
 ##Case Study: Fibonacci
@@ -171,6 +172,9 @@ What is wrong with this code? For example, apply the functor and use it to memoi
 
 Note: It is useful to actually look at the result which is described as a big integer, you might want to convert it to a string using for example the library function Big_int.string_of_big_int.
 
+> Not Answered yet.
+
+
 ##Q3.3 (15 points)
 
 Finish the Memoizer functor in memfib.ml by writing an automatic memoizer that doesnt have the problems of the PoorMemoizer. Notice that Memoizer ascribes to a different signature than PoorMemoizer. Functions that can be memoized by Memoizer take a new argument: rather than having type key -> a they have type (key -> a)-> (key -> a). When implementing Memoizer, assume that any function you memoize uses this new first argument instead of directly calling itself recursively.
@@ -181,6 +185,9 @@ To illustrate how we would want to use the function memo, take a look at the mod
 ##Q3.4 (2 points)
 
 What happens if you use Memoizer to memoize a function that has effects? In particular, what happens if you memoize a function that prints things?
+
+> Not Answered Yet.
+
 
 #Question 4 (10 points)
 
