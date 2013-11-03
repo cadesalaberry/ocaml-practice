@@ -172,7 +172,8 @@ What is wrong with this code? For example, apply the functor and use it to memoi
 
 Note: It is useful to actually look at the result which is described as a big integer, you might want to convert it to a string using for example the library function Big_int.string_of_big_int.
 
-> Not Answered yet.
+> When running the function, if no match is found in the dictionary, the module will generate a result from the original function and then store it in the dictionary. Doing so will not use memoisation to find the result, but make it available for the next call.
+If there is no match in the dictionary, and there is still *k* recursive calls, those calls will be done using the original function, not the memoised one. Therefore performance will decrease due to the bad memoisation implementation.
 
 
 ###Q3.3 (15 points)
@@ -186,7 +187,7 @@ To illustrate how we would want to use the function memo, take a look at the mod
 
 What happens if you use Memoizer to memoize a function that has effects? In particular, what happens if you memoize a function that prints things?
 
-> Not Answered Yet.
+> The Memoiser allows us to get faster results from functions by using memory instead of computation to get the value. However, if applied to a function that has effects, the function will be executed the first time, and that result will be stored in memory. For the following calls, instead of executing the functino again, it will just pull it from memory. Therefore a function printing things will be executed only once (the first time), and the following will just return whatever value the function returned at its first execution. Nothing more will be printed after the first execution.
 
 
 ##Question 4 (10 points)
