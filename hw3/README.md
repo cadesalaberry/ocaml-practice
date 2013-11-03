@@ -2,7 +2,7 @@
 
 There are three directories, backtrack, memo, and metric. In each of the directories, you will find a file sources.ml which reads in multiple files. You can simply type
 
-	#use ‘‘sources.ml’’;;
+	#use "sources.ml";;
 
 in the interactive OCaml interpreter and it will load all the files contained in the file.
 
