@@ -15,10 +15,12 @@ struct
       hist := BigIntDict.insert (!hist) (big 1, big 1);
 
       let rec smart_fib n = match (BigIntDict.lookup (!hist) (big n)) with
-        | None -> (let value = (Big_int.add_big_int (smart_fib (n - 1)) (smart_fib (n - 2)))
+        | None -> (
+          let value = Big_int.add_big_int (smart_fib (n - 1)) (smart_fib (n - 2))
           in
-            hist := BigIntDict.insert (!hist) (big n, value);
-            value)
+            hist := BigIntDict.insert !hist (big n, value);
+            value;
+          )
         | Some v -> v
     in
       smart_fib n
@@ -43,8 +45,23 @@ struct
 
   exception NotImplemented 
 
-  let rec memo f = (fun k -> raise NotImplemented)
-  end
+  let rec memo f =
+    let (hist : 'a D.dict ref) = ref D.empty
+    in
+      let rec memoed_fct fct = (
+        fun k -> match D.lookup (!hist) k with
+        | Some res -> res
+        | None ->
+          let value = (fct (memoed_fct fct) k)
+            in (
+              hist := D.insert !hist (k,value);
+              value;
+            )
+      )
+      in
+    memoed_fct f
+
+end
 
 
 module AutoMemoedFibo : FIBO =

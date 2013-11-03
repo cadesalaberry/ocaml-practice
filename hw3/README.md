@@ -41,19 +41,19 @@ Show how to use the functor Speed to obtain an implementation for computing mile
 
 It is also often useful to convert between different metrics. Define a module type CONVERSION which specifies the following conversion functions:
 
-feet2meter
+*feet2meter*
 
 	meter = feet * 0.3048
 
-fahrenheit2celsius
+*fahrenheit2celsius*
 
 	celsius = (fahrenheit - 32) / 1.8
 
-miles2KM
+*miles2KM*
 
 	km = miles * 1.60934
 
-MilesPerHour2KMPerHour
+*MilesPerHour2KMPerHour*
 
 Then implement a module which provides these conversion functions.
 
