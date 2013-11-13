@@ -1,6 +1,6 @@
 # Assignment 4
 
-## Question 1 (20 points) Tail-recursion
+## Question 1 - Tail-recursion (20 points)
 
 In this question, we are rewriting some basic functions from the list library tail-recursively. See the file cont.ml in the directory continuations.
 
@@ -23,7 +23,7 @@ Write foldr tail-recursively by providing an implementation
 As foldr, it takes in a function of type ’a -> ’b -> ’b, a list of type ’a list, and a base element of type ’b. In addition, it also takes in a continuation of type ’b -> ’c which builds incrementally the final result. It takes in as input the result built so far.
 
 
-## Question 2 (15 points)
+## Question 2 - Making Change (15 points)
 
 We revisit the implementation of change which when given a list of coins (ordered in increasing value) and an amount returns a list of coins which add up to the expected amount. It might fail, if no change can be given.
 Implement the revised function change coin_list amt sc fc which has type
@@ -40,7 +40,7 @@ The failure continuation is used to handle backtracking. It is used instead of e
 HINT: First modify the function change which uses exceptions for backtracking such that it is building the result tail-recursively using a success continuation. This function *change_attempt* should have type *int list -> int -> (int list -> ’a)-> ’a*
 
 
-## Question 3 (25 points) Lazy Functional Programming
+## Question 3 - Lazy Functional Programming (25 points)
 
 In this question you are going to produce the infinite stream of Hamming numbers.These are numbers that have as prime divisors 2 or 3 or 5 but no other prime divisors. The ”or” in the previous sentence is the ”logical or” so of course we include numbers that have both 2 and 3 or 2 and 5 and so on as Hamming numbers. Hamming numbers are given by 2i 3j 5k where i, j and k are each greater than or equal to zero.
 
