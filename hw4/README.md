@@ -9,7 +9,7 @@ In this question, we are rewriting some basic functions from the list library ta
 
 Write filter tail-recursively by providing an implementation for
 	
-	aux_filter : (’a -> bool) -> ’a list -> (’a list -> ’b) -> ’b
+	aux_filter	: (’a -> bool) -> ’a list -> (’a list -> ’b) -> ’b
 
 filter takes in three input arguments: the predicate of type ’a -> bool, a list of type ’a list, and a continuation of type ’a list -> ’b. The continuation expects as input the result list it has built so far and returns elements of type ’b.
 
@@ -18,7 +18,7 @@ filter takes in three input arguments: the predicate of type ’a -> bool, a lis
 
 Write foldr tail-recursively by providing an implementation
 
-	aux_foldr : (’a -> ’b -> ’b) -> ’a list -> ’b -> (’b -> ’c) -> ’c
+	aux_foldr	: (’a -> ’b -> ’b) -> ’a list -> ’b -> (’b -> ’c) -> ’c
 
 As foldr, it takes in a function of type ’a -> ’b -> ’b, a list of type ’a list, and a base element of type ’b. In addition, it also takes in a continuation of type ’b -> ’c which builds incrementally the final result. It takes in as input the result built so far.
 
@@ -103,8 +103,8 @@ We now want to generate all diagonals in the Pascal triangle, starting with the 
 
 Next, we want to turn the stream of diagonals into a pascal triangle which is represented as a stream of rows where each row is represented as a list. To accomplish this, it is helpful to write two functions
 
-	getNth : int -> ’a Stream.str -> ’a
-	row : int -> int Stream.str Stream.str -> int list
+	getNth : int -> ’a  Stream.str -> ’a
+	row    : int -> int Stream.str Stream.str -> int list
 
 The function, getNth takes in an integer i and a stream and returns the i-th element of the stream.
 
