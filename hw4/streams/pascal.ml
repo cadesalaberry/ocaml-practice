@@ -2,12 +2,16 @@ module Pascal =
 struct
   open Stream
     
-    
 (* ------------------------------------------------------- *)
 (* Computing partial sums lazily over a stream of nats     *)
 
-let rec psums s = raise TODO
-
+let rec psums s = (*raise TODO*)
+  let rec buffered_psums s buff =
+    { hd = s.hd + buff;
+      tl = Susp(fun () -> (buffered_psums (force s.tl) (s.hd + buff)))
+    }
+  in
+    buffered_psums s 0;;
 
 (*----------------------------------------------------------------------------*)
 (* Pascal's triangle 

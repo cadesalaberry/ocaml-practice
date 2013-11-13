@@ -56,6 +56,6 @@ and fibs' =
 let fibonacci_series = fibs 
 
 (* Hamming series *) 
-let rec hamming_series =  raise TODO
+let rec hamming_series = raise TODO
 
 end;;

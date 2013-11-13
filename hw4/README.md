@@ -42,7 +42,7 @@ HINT: First modify the function change which uses exceptions for backtracking su
 
 ## Question 3 - Lazy Functional Programming (25 points)
 
-In this question you are going to produce the infinite stream of Hamming numbers.These are numbers that have as prime divisors 2 or 3 or 5 but no other prime divisors. The ”or” in the previous sentence is the ”logical or” so of course we include numbers that have both 2 and 3 or 2 and 5 and so on as Hamming numbers. Hamming numbers are given by 2i 3j 5k where i, j and k are each greater than or equal to zero.
+In this question you are going to produce the infinite stream of Hamming numbers.These are numbers that have as prime divisors 2 or 3 or 5 but no other prime divisors. The ”or” in the previous sentence is the ”logical or” so of course we include numbers that have both 2 and 3 or 2 and 5 and so on as Hamming numbers. Hamming numbers are given by 2^i * 3^j * 5^k where i, j and k are each greater than or equal to zero.
 
 The first few Hamming numbers are 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, ...
 

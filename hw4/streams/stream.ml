@@ -61,8 +61,13 @@ struct
     }
 
       
-  let rec merge s1 s2 = raise TODO
-
-
+  let rec merge s1 s2 = (*raise TODO*)
+    match (s1.hd <= s2.hd) with
+    | true  ->  { hd = s1.hd;
+                  tl = Susp (fun () -> merge (force s1.tl) s2)
+                }
+    | false ->  { hd = s2.hd;
+                  tl = Susp (fun () -> merge s1 (force s2.tl))
+                }
   end ;;
 
