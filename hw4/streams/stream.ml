@@ -12,7 +12,7 @@ sig
   val filter: ('a -> bool) -> 'a str -> 'a str 
   val add   : int str -> int str -> int str 
   val merge : 'a str -> 'a str -> 'a str 
-end;;
+end ;;
 
 module Stream : STREAM = 
 struct
@@ -62,12 +62,17 @@ struct
 
       
   let rec merge s1 s2 = (*raise TODO*)
-    match (s1.hd <= s2.hd) with
-    | true  ->  { hd = s1.hd;
-                  tl = Susp (fun () -> merge (force s1.tl) s2)
-                }
-    | false ->  { hd = s2.hd;
-                  tl = Susp (fun () -> merge s1 (force s2.tl))
-                }
-  end ;;
+    if s1.hd < s2.hd then
+      { hd = s1.hd;
+        tl = Susp (fun () -> merge (force s1.tl) s2)
+      }
+    else if s1.hd > s2.hd then
+      { hd = s2.hd;
+        tl = Susp (fun () -> merge s1 (force s2.tl))
+      }
+    else
+      { hd = s1.hd;
+        tl = Susp (fun () -> merge (force s1.tl) (force s2.tl))
+      }
 
+end ;;

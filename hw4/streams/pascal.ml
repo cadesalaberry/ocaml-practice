@@ -1,7 +1,9 @@
 module Pascal = 
 struct
-  open Stream
-    
+
+open Stream
+open Series
+
 (* ------------------------------------------------------- *)
 (* Computing partial sums lazily over a stream of nats     *)
 
@@ -31,15 +33,13 @@ The first element corresponds to the first diagonal in Pascal's triangle;
 the second element to the second diagonal, etc.
  
 *)
-let rec ones = {hd = 1 ; tl = Susp (fun () -> ones)} ;;(**)
-
 let rec pascal = (*raise TODO*)
   let rec buffered_pascal buff =
   	{ hd = buff;
   	  tl = Susp(fun () -> buffered_pascal (psums buff))
   	}
   in
-  	buffered_pascal ones (*Should replace ones by Stream.ones*)
+  	buffered_pascal Series.ones (*Should replace ones by Stream.ones*)
 
 
 let rec getNth n s = (*raise TODO*)
