@@ -31,14 +31,39 @@ The first element corresponds to the first diagonal in Pascal's triangle;
 the second element to the second diagonal, etc.
  
 *)
-let rec pascal  = raise TODO
+let rec ones = {hd = 1 ; tl = Susp (fun () -> ones)} ;;(**)
+
+let rec pascal = (*raise TODO*)
+  let rec buffered_pascal buff =
+  	{ hd = buff;
+  	  tl = Susp(fun () -> buffered_pascal (psums buff))
+  	}
+  in
+  	buffered_pascal ones (*Should replace ones by Stream.ones*)
 
 
-let rec getNth n s = raise TODO
+let rec getNth n s = (*raise TODO*)
+  match n with 
+    | 0 -> s.hd
+    | n -> getNth (n - 1) (force s.tl)
 
-let rec row k (s: (int str) str) = raise TODO
- 
-let rec triangle (s : (int str) str) = raise TODO
+
+let rec row k (s: (int str) str) = (*raise TODO*)
+  let rec row' k2 s2 buff =
+  	match k2 with 
+  	| 0 -> (s2.hd.hd)::buff
+  	| _ -> row (k-1) (force s.tl) @ [getNth k s.hd]
+  in
+  	row' k s []  
+
+
+let rec triangle (s : (int str) str) = (*raise TODO*)
+  let rec buffered_triangle buff s =
+    { hd = row buff;
+      tl = Susp(fun () -> (buffered_triangle (buff + 1) s))
+    }
+  in
+    buffered_triangle 0 s
 
 
 (*----------------------------------------------------------------------------*)
