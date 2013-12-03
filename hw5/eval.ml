@@ -64,13 +64,13 @@ and freeVars e = match e with
   | Int n -> []
   | Bool b -> []
   | If(e, e1, e2) ->
-    union (freeVars e, union (freeVars e1, freeVars e2))
+      union (freeVars e, union (freeVars e1, freeVars e2))
   | Primop (po, args) ->
-    List.fold_right (fun e1 e2 -> union (freeVars e1, e2)) args []
+      List.fold_right (fun e1 e2 -> union (freeVars e1, e2)) args []
   | Tuple exps ->
-    unionList (List.map freeVars exps)
+      unionList (List.map freeVars exps)
   | Fn (x, _, e) ->
-    delete ([x], freeVars e)
+      delete ([x], freeVars e)
   | Rec (x, _, e) ->
       delete ([x], freeVars e)
   | Let (decs, e2) ->
@@ -282,7 +282,7 @@ and eval exp =
        | Bool false -> eval e2
        | _ -> raise (Stuck "Left term of application is not an Fn"))
 
-  | Apply (e1, e2) -> raise Unimplemented  
+  | Apply (e1, e2) -> Apply (eval e1, e2)
 
   in
     bigstep_depth := !bigstep_depth - 1;
