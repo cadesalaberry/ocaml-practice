@@ -1,0 +1,167 @@
+Contents:
+  - Getting started
+  - - Compiling the code
+  - - Running the code in the interpreter
+  - .ml/.mli
+  - MinML
+
+
+*** Getting started ***
+
+    You can run the code in two ways. Either you compile it and run
+    the front end, or you have it run in an interpreter.
+
+    *** Compiling the code ***
+
+        Go in a command line and type
+        
+          make
+
+        If the installation complains that ocamlbuild cannot be found,
+        you might want to ask your package manager to install it.
+
+        To run the code you just have to run the executable
+
+          ./exec.native
+
+        If you run it without arguments, you will get an interactive mode.
+        This mode will ask for a command. The valid commands are:
+         
+          type        Typechecks exressions
+          eval        Performs bigstep evaluation of expressions
+          smallstep   Performs smallstep evaluation of expressions
+          print       pretty prints expressions
+	  unusedvars  returns unused variables in an expression
+	  freevars    returns the free variables in an expression
+          usual       Type checks then performs bigstep evaluation of expressions
+          help        Prints an help message
+
+        Once you chose the command you want to use, you can simply
+        input your expression and finish it with a single semicolon ;
+
+        You can also run the executable with a filename e.g.
+
+          ./exec.native examples/arith.mml
+
+        It will type check the expression in the file then it will perform
+        a bigstep evaluation of the expression.
+
+        In addition, you can provide an action to it before the name of the file e.g
+
+          ./exec.native type examples/arith.mml
+
+        The actions are the same as the ones for the interactive mode and accomplish
+        the same thing.
+
+        Until you do the assignment, many of the examples will not work (we used
+        "arith.mml" as an example because it *will* work even with missing code).
+
+
+    *** Running the code in the interpreter ***
+
+        You can also run the code in the interpreter. To do so, run
+        
+          make toplevel
+
+        in a terminal. It will create a toplevel executable and run it. The toplevel
+        will launch and it will preload every module and their signatures. You will
+        then be able to open a module (e.g. Typecheck) to test it or use functions
+        from this module directly (e.g. Typecheck.synth). 
+
+        If you want to test your own function, you will need to add its signature 
+        to the signature of the module. The signature of module is discussed in 
+        the section .ml/.mli since the representation differs from the one you have 
+        seen in class.
+
+        Then, you can test the code using the functions in the file top.ml e.g.
+        
+          Top.file_print "examples/arith.mml";;
+
+        or
+
+          Top.loop_print ();;
+
+        You can test the functions directly if you define yourself an abstract 
+        syntax tree (AST).
+
+
+*** .ml/.mli ***
+
+    So far, you have seen modules defined with a signature and a struct definition. 
+    OCaml creates automatically a module for each file and binds a signature to it 
+    via its corresponding .mli file. If no such file is defined, then the situation 
+    is similar to a module to which you have not defined any signature: every function 
+    will be available from the outside. 
+
+    Within Emacs, using the OCaml mode, you can go from the .ml file to the .mli 
+    and vice-versa using the macro C-c C-a. (Alternatively, you can simply open 
+    the corresponding file as usual).
+
+    Beside the fact that you don't have to write
+    
+      module Typecheck =
+        struct
+          ...
+        end
+    
+    the way you deal with modules is the same. The name of a module is the name 
+    of the file with the first letter capitalized. Hence, for the file minml.ml, we 
+    have the module Minml.
+
+    Using the name of the file as the name of the module reduces the need to explicitely define 
+    them and follows the logical organisation of informations as we think of it 
+    (separate ideas are separated in different files). It however is also very brittle and 
+    not necessarily a good design decision on OCaml's part.
+
+*** MinML ***
+
+minml.sml contains the abstract syntax of MinML.
+
+  type exp =
+      Int of int                        (* 0 | 1 | 2 | ... *)
+    | Bool of bool                      (* true | false *)
+    | If of exp * exp * exp             (* if e then e1 else e2 *)
+    | Primop of primop * exp list       (* e1 <op> e2  or  <op> e *)
+    | Tuple of exp list                 (* (e1, ..., eN) *)
+    | Fn of (name * Type.tp option * exp)    (* fn x => e *)
+    | Rec of (name * Type.tp option * exp)     (* rec f => e *)
+    | Let of (dec list * exp)         (* let decs in e end *)
+    | Apply of exp * exp                (* e1 e2 *)
+    | Var of name                       (* x *)
+    | Anno of exp * Type.tp        (* e : t *)
+
+  and dec =
+      Val of exp * name                  (* val x = e *)
+    | Valtuple of exp * (name list)      (* val (x1,...,xN) = e *)
+    | ByName of exp * name               (* val name x = e1 *)
+
+Fn and Rec have an optional type argument (either Some t or None). If no type
+annotation is provided, then the argument will be None.
+
+A confusing feature of this abstract syntax is that the let-fun construct
+
+   let fun f (x : int) : int = x * x * x
+   in
+     f 3
+   end;
+
+is represented as
+
+   Let([Val(Rec("f",
+                Some (Type.Arrow(Type.Int, Type.Int)),
+                Fn("x", Some Type.Int, Primop(Times, [Var "x"; Primop (Times, [Var "x"; Var "x"])]))), "f")],
+        Apply(Var "f", Int 3))
+
+or roughly as
+
+   let val f = rec f : int -> int => fn x : int => x * x * x
+   in
+     f 3
+   end
+
+In other words, there is no let-fun internally, just a let-val whose bound expression
+is a "rec" (which can't even be parsed on its own).
+
+Fortunately for you, we've already given you the relevant code, so this shouldn't
+cause too much trouble.
+

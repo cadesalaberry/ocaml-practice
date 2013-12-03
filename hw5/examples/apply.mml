@@ -1,0 +1,5 @@
+let fun apply (f : int -> int) : int -> int =
+          fn x : int => f(x)
+in
+  apply (fn x => x * 3) 100
+end;
