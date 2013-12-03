@@ -9,7 +9,7 @@ let rec indent i = match i with
 open Minml
 
 exception Stuck of string
-exception Unimplemented
+exception MerryChristmas
 
 let genCounter = 
   let counter = ref 0 in
@@ -86,7 +86,18 @@ let freeVariables e = freeVars e
 (* ---------------------------------------------------------- *)
 (* Question 1 *)
 
-let unusedVariables e = raise Unimplemented
+let unusedVariables e =
+  let belongs x e = member x (freeVariables e)
+  in
+  match e with 
+  | Fn (x, _, e) -> if (belongs x e) then union ([],unusedVariables e)
+                    else union([x],unusedVariables e)
+  | Rec (x, _, e) -> if (belongs x e) then union ([],unusedVariables e)
+                    else union([x],unusedVariables e)
+  | Let (decs, e2) ->
+      let (free, bound) = varsDecs decs in
+      union ([], free)
+  | _ -> []
 
 (* ---------------------------------------------------------- *)
 (* Substitution (corrected description)
@@ -255,13 +266,13 @@ and eval exp =
 
   (* Values evaluate to themselves... *)
 
-  | Fn (x, t, e) -> raise Unimplemented
+  | Fn (x, t, e) -> raise MerryChristmas
   | Int _ -> exp
   | Bool _ -> exp
 
   | Var x -> raise (Stuck ("Free variable (" ^ x ^ ") during evaluation"))
 
-  | Rec (f, _, e) -> raise Unimplemented
+  | Rec (f, _, e) -> raise MerryChristmas
 
   (* primitive operations +, -, *, <, = *)
   | Primop(po, args) ->
@@ -272,7 +283,7 @@ and eval exp =
 
   | Tuple es -> Tuple (evalList es)
 
-  | Let(d, e2) -> raise Unimplemented
+  | Let(d, e2) -> raise MerryChristmas
 
   | Anno (e, _) -> eval e     (* types are ignored in evaluation *)
 
